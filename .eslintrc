@@ -1,0 +1,13 @@
+{
+  "extends": "eslint-config-airbnb",
+
+  "rules": {
+    "new-cap": 0,
+    "quotes": [1, "double"],
+    "indent": [2, 2, {"SwitchCase": 1}],
+    "react/no-multi-comp": 0,
+    "no-else-return": 0,
+    "no-unused-vars": [2, {"vars": "all", "args": "after-used"}],
+    "no-undef": 1,
+  },
+}
