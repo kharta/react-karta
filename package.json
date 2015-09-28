@@ -25,8 +25,12 @@
     "build": "NODE_ENV=production webpack -p --display-reasons --display-error-details --progress --colors --config webpack.config.js --bail"
   },
   "dependencies": {
+    "axios": "^0.6.0",
     "d3": "^3.5.6",
+    "file-loader": "^0.8.4",
+    "json-loader": "^0.5.3",
     "react": "^0.14.0-rc1",
-    "react-dom": "^0.14.0-rc1"
+    "react-dom": "^0.14.0-rc1",
+    "topojson": "^1.6.19"
   }
 }
