@@ -1,21 +1,14 @@
 import React from "react";
-import d3 from "d3";
 
 export default React.createClass({
   contextTypes: {
-    projection: React.PropTypes.func.isRequired,
-    foo: React.PropTypes.string.isRequired,
+    path: React.PropTypes.func.isRequired,
   },
 
   render() {
-    console.log("projection context", this.context.projection);
-    console.log("foo", this.context.foo);
-    const path = d3.geo.path().projection(this.context.projection);
-    const featureCollection = <path d={path(this.props.geoJSON)} />;
+    const square = { "type": "FeatureCollection", "features": [ { "type": "Feature", "properties": {}, "geometry": { "type": "Polygon", "coordinates": [ [ [ 41.4921875, -13.2399454992863 ], [ 9.4921875, 52.908902047770255 ], [ 116.3671875, 52.908902047770255 ], [ 116.3671875, -13.2399454992863 ], [ 9.4921875, -13.2399454992863 ] ] ] } } ] };
     return (
-      <svg width="960" height="960">
-        {featureCollection}
-      </svg>
+      <path d={this.context.path(square)} />
     );
   },
 });
