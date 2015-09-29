@@ -3,11 +3,14 @@ import React from "react";
 export default React.createClass({
   contextTypes: {
     renderPath: React.PropTypes.func.isRequired,
-    canvasContext: React.PropTypes.object,
+    paintContext: React.PropTypes.object,
+  },
+
+  componentDidUpdate() {
+    this.context.renderPath(this.context.paintContext, this.props.geoJSON);
   },
 
   render() {
-    this.context.renderPath(this.context.canvasContext, this.props.geoJSON);
     return null;
     // const style = {
     //   fill: this.props.fill || "#333",

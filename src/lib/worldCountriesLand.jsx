@@ -14,15 +14,15 @@ export default React.createClass({
 
   componentDidMount() {
     axios.get(worldURL)
-      .then(({data: world}) => {
-        const geoJSON = topojson.feature(world, world.objects.land);
+      .then(({data: topo}) => {
+        const geoJSON = topojson.feature(topo, topo.objects.land);
         this.setState({ geoJSON });
       });
   },
 
   render() {
     if (this.state.geoJSON) {
-      return <Feature geoJSON={this.state.geoJSON} {...this.props} />;
+      return <Feature geoJSON={this.state.geoJSON} />;
     } else {
       return null;
     }

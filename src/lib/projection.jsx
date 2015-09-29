@@ -1,59 +1,62 @@
 import React from "react";
+import ReactDOM from "react-dom";
 import d3 from "d3";
+
+const projection = d3.geo.orthographic()
+  .scale(720 / 2.1)
+  .translate([960 / 2, 720 / 2])
+  .clipAngle(90)
+  .precision(null);
+
 
 export default React.createClass({
   propTypes: {
-    children: React.PropTypes.node,
-    rotation: React.PropTypes.number.isRequired,
-  },
-
-  contextTypes: {
     width: React.PropTypes.number.isRequired,
     height: React.PropTypes.number.isRequired,
-    path: React.PropTypes.func.isRequired,
+    rotation: React.PropTypes.number.isRequired,
+    canvas: React.PropTypes.func.isRequired,
+    children: React.PropTypes.node,
   },
 
   childContextTypes: {
-    projection: React.PropTypes.func.isRequired,
+    renderPath: React.PropTypes.func.isRequired,
+    paintContext: React.PropTypes.object,
   },
-
-  getDefaultProps() {
-    return { rotation: 0.0 };
-  },
-
-  getInitialState() {
-    return {
-      // scale: 1,
-      scale: (this.context.width + 1) / 2 / Math.PI,
-    };
-  },
-
-  // componentDidMount() {
-  //   setInterval(() => {
-  //     this.setState({ scale: this.state.scale + 10 });
-  //   }, 1000);
-  // },
 
   getChildContext() {
-    const width = this.context.width;
-    const height = this.context.height;
+    let paintContext = null;
 
-    const projection = d3.geo.albers()
-        .scale(this.state.scale)
-        .translate([width / 2, height / 2])
-        .rotate([this.props.rotation, -15])
-        .precision(0.1);
-
-    this.context.path.projection(projection);
+    if (this.refs.canvas) {
+      paintContext = ReactDOM.findDOMNode(this.refs.canvas).getContext("2d");
+    }
 
     return {
-      projection,
+      paintContext,
+      renderPath: this.renderPath,
     };
+  },
+
+  renderPath(context, toDraw) {
+    projection.rotate([this.props.rotation, this.props.rotation]);
+    const path = d3.geo.path().projection(projection).context(context);
+    context.clearRect(0, 0, this.props.width, this.props.height);
+
+    context.beginPath();
+    path(toDraw);
+    context.fillStyle = "#222";
+    context.fill();
   },
 
   render() {
     return (
-      <g>{this.props.children}</g>
+      <div>
+        {React.createElement(this.props.canvas, {
+          width: this.props.width,
+          height: this.props.height,
+          ref: "canvas",
+        })}
+        {this.props.children}
+      </div>
     );
   },
 });
