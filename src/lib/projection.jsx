@@ -8,6 +8,8 @@ const projection = d3.geo.orthographic()
   .clipAngle(90)
   .precision(null);
 
+let paintContext = null;
+
 
 export default React.createClass({
   propTypes: {
@@ -20,12 +22,11 @@ export default React.createClass({
 
   childContextTypes: {
     renderPath: React.PropTypes.func.isRequired,
+    renderStroke: React.PropTypes.func.isRequired,
     paintContext: React.PropTypes.object,
   },
 
   getChildContext() {
-    let paintContext = null;
-
     if (this.refs.canvas) {
       paintContext = ReactDOM.findDOMNode(this.refs.canvas).getContext("2d");
     }
@@ -33,7 +34,14 @@ export default React.createClass({
     return {
       paintContext,
       renderPath: this.renderPath,
+      renderStroke: this.renderStroke,
     };
+  },
+
+  componentWillUpdate() {
+    if (paintContext) {
+      paintContext.clearRect(0, 0, this.props.width, this.props.height);
+    }
   },
 
   renderPath(context, toDraw) {
@@ -45,6 +53,17 @@ export default React.createClass({
     path(toDraw);
     context.fillStyle = "#222";
     context.fill();
+  },
+
+  renderStroke(context, toDraw, color) {
+    projection.rotate([this.props.rotation, this.props.rotation]);
+    const path = d3.geo.path().projection(projection).context(context);
+
+    context.beginPath();
+    path(toDraw);
+    context.lineWidth = 0.5;
+    context.strokeStyle = color;
+    context.stroke();
   },
 
   render() {

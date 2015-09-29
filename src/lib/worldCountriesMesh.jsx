@@ -1,7 +1,7 @@
 import React from "react";
 import axios from "axios";
 import topojson from "topojson";
-import worldURL from "file!data/world-50m.json";
+import worldURL from "file!data/world-110m.json";
 
 import Mesh from "mesh";
 

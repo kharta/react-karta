@@ -6,7 +6,8 @@ import d3 from "d3";
 import Canvas from "canvas";
 import Projection from "projection";
 // import FeatureCollection from "featureCollection";
-// import WorldCountriesMesh from "worldCountriesMesh";
+import Sphere from "sphere";
+import WorldCountriesMesh from "worldCountriesMesh";
 import WorldCountriesLand from "worldCountriesLand";
 
 const App = React.createClass({
@@ -29,6 +30,8 @@ const App = React.createClass({
     return (
       <Projection width={960} height={720} rotation={this.state.rotation} canvas={Canvas}>
         <WorldCountriesLand fill={"#333"} />
+        <WorldCountriesMesh fill={"#333"} />
+        <Sphere />
       </Projection>
     );
   },

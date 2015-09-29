@@ -12,13 +12,5 @@ export default React.createClass({
 
   render() {
     return null;
-    // const style = {
-    //   fill: this.props.fill || "#333",
-    //   stroke: "none",
-    // };
-
-    // return (
-    //   <path d={this.context.path(this.props.geoJSON)} style={style} />
-    // );
   },
 });
