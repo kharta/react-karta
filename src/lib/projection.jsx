@@ -4,6 +4,7 @@ import d3 from "d3";
 export default React.createClass({
   propTypes: {
     children: React.PropTypes.node,
+    rotation: React.PropTypes.number.isRequired,
   },
 
   contextTypes: {
@@ -14,6 +15,10 @@ export default React.createClass({
 
   childContextTypes: {
     projection: React.PropTypes.func.isRequired,
+  },
+
+  getDefaultProps() {
+    return { rotation: 0.0 };
   },
 
   getInitialState() {
@@ -33,9 +38,10 @@ export default React.createClass({
     const width = this.context.width;
     const height = this.context.height;
 
-    const projection = d3.geo.mercator()
+    const projection = d3.geo.albers()
         .scale(this.state.scale)
         .translate([width / 2, height / 2])
+        .rotate([this.props.rotation, -15])
         .precision(0.1);
 
     this.context.path.projection(projection);
