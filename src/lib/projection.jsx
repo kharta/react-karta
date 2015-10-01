@@ -2,68 +2,57 @@ import React from "react";
 import ReactDOM from "react-dom";
 import d3 from "d3";
 
-const projection = d3.geo.orthographic()
-  .scale(720 / 2.1)
-  .translate([960 / 2, 720 / 2])
-  .clipAngle(90)
-  .precision(null);
-
-let paintContext = null;
-
-
 export default React.createClass({
   propTypes: {
     width: React.PropTypes.number.isRequired,
     height: React.PropTypes.number.isRequired,
     rotation: React.PropTypes.number.isRequired,
     canvas: React.PropTypes.func.isRequired,
+    renderer: React.PropTypes.func.isRequired,
     children: React.PropTypes.node,
   },
 
   childContextTypes: {
     renderPath: React.PropTypes.func.isRequired,
     renderStroke: React.PropTypes.func.isRequired,
-    paintContext: React.PropTypes.object,
   },
 
   getChildContext() {
-    if (this.refs.canvas) {
-      paintContext = ReactDOM.findDOMNode(this.refs.canvas).getContext("2d");
-    }
-
     return {
-      paintContext,
       renderPath: this.renderPath,
       renderStroke: this.renderStroke,
     };
   },
 
-  componentWillUpdate() {
-    if (paintContext) {
-      paintContext.clearRect(0, 0, this.props.width, this.props.height);
+  componentWillReceiveProps(newProps) {
+    if (newProps.rotation !== this.props.rotation) {
+      this.state.projection.rotate([newProps.rotation, newProps.rotation]);
     }
   },
 
-  renderPath(context, toDraw) {
-    projection.rotate([this.props.rotation, this.props.rotation]);
-    const path = d3.geo.path().projection(projection).context(context);
-    context.clearRect(0, 0, this.props.width, this.props.height);
+  getInitialState() {
+    const projection = d3.geo.orthographic()
+      .scale(720 / 2.1)
+      .translate([960 / 2, 720 / 2])
+      .clipAngle(90)
+      .precision(null);
 
-    context.beginPath();
-    path(toDraw);
-    context.fillStyle = "#222";
-    context.fill();
+    return {
+      projection,
+      paintContext: null,
+    };
   },
 
-  renderStroke(context, toDraw, color) {
-    projection.rotate([this.props.rotation, this.props.rotation]);
-    const path = d3.geo.path().projection(projection).context(context);
+  componentWillUpdate() {
+    this.refs.renderer && this.refs.renderer.clear();
+  },
 
-    context.beginPath();
-    path(toDraw);
-    context.lineWidth = 0.5;
-    context.strokeStyle = color;
-    context.stroke();
+  renderPath(data, color) {
+    this.refs.renderer && this.refs.renderer.fill(data, color);
+  },
+
+  renderStroke(data, color) {
+    this.refs.renderer && this.refs.renderer.stroke(data, color);
   },
 
   render() {
@@ -72,10 +61,20 @@ export default React.createClass({
         {React.createElement(this.props.canvas, {
           width: this.props.width,
           height: this.props.height,
+          connectPaintContext: this.connectPaintContext,
           ref: "canvas",
+        })}
+        {this.state.paintContext && React.createElement(this.props.renderer, {
+          ref: "renderer",
+          projection: this.state.projection,
+          paintContext: this.state.paintContext,
         })}
         {this.props.children}
       </div>
     );
+  },
+
+  connectPaintContext(paintContext) {
+    this.setState({ paintContext: paintContext }, this.forceUpdate);
   },
 });

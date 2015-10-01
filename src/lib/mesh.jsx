@@ -7,7 +7,7 @@ export default React.createClass({
   },
 
   componentDidUpdate() {
-    this.context.renderStroke(this.context.paintContext, this.props.geoJSON, "#fff");
+    this.context.renderStroke(this.props.geoJSON, "#fff");
   },
 
   render() {

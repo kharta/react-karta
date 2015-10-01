@@ -6,8 +6,13 @@ export default React.createClass({
     paintContext: React.PropTypes.object,
   },
 
+  shouldComponentUpdate() {
+    console.log("feature update?");
+    return true;
+  },
+
   componentDidUpdate() {
-    this.context.renderPath(this.context.paintContext, this.props.geoJSON);
+    this.context.renderPath(this.props.geoJSON);
   },
 
   render() {

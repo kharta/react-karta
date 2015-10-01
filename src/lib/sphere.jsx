@@ -7,7 +7,7 @@ export default React.createClass({
   },
 
   componentDidUpdate() {
-    this.context.renderStroke(this.context.paintContext, {type: "Sphere"}, "#000");
+    this.context.renderStroke({type: "Sphere"}, "#000");
   },
 
   render() {

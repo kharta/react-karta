@@ -4,6 +4,7 @@ import ReactDOM from "react-dom";
 import d3 from "d3";
 
 import Canvas from "canvas";
+import GeoPathRenderer from "geoPathRenderer";
 import Projection from "projection";
 // import FeatureCollection from "featureCollection";
 import Sphere from "sphere";
@@ -28,7 +29,7 @@ const App = React.createClass({
 
   render() {
     return (
-      <Projection width={960} height={720} rotation={this.state.rotation} canvas={Canvas}>
+      <Projection width={960} height={720} rotation={this.state.rotation} canvas={Canvas} renderer={GeoPathRenderer}>
         <WorldCountriesLand fill={"#333"} />
         <WorldCountriesMesh fill={"#333"} />
         <Sphere />
@@ -37,7 +38,7 @@ const App = React.createClass({
   },
 
   tick() {
-    this.setState({ rotation: 1e-2 * Date.now() - this.state.start });
+    // this.setState({ rotation: 1e-2 * Date.now() - this.state.start });
     // requestAnimationFrame(this.tick);
   },
 
