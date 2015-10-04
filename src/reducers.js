@@ -3,15 +3,26 @@ import {
   REQUEST_DATA, RECEIVE_DATA
 } from "./actions";
 
-function projection(state = {rotation: [0, 0]}, action) {
+import d3 from "d3";
+
+const initialProjection = {
+  type: d3.geo.orthographic,
+  scale: 720 / 2.1,
+  translate: [960 / 2, 720 / 2],
+  clipAngle: 90,
+  precision: null,
+  rotate: [0, 0],
+};
+
+function projection(state = initialProjection, action) {
   switch (action.type) {
     case SET_ROTATION:
       return Object.assign({}, state, {
-        rotation: action.angle,
+        rotate: action.angle,
       });
     case INC_ROTATION:
       return Object.assign({}, state, {
-        rotation: [state.rotation[0] + action.angle, state.rotation[1] + action.angle],
+        rotate: [state.rotate[0] + action.angle, state.rotate[1] + action.angle],
       });
     default:
       return state;

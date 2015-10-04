@@ -13,18 +13,20 @@ import World110m from "world110m";
 import CountriesLand from "countriesLand";
 import CountriesMesh from "countriesMesh";
 
+let stop = false;
 const App = React.createClass({
-  getInitialState() {
-    return {
-      start: Date.now(),
-      rotation: 0,
-    };
-  },
+  // getInitialState() {
+  //   return {
+  //     start: Date.now(),
+  //     rotation: 0,
+  //   };
+  // },
 
   componentDidMount() {
     this.tick();
     d3.timer(() => {
       this.tick();
+      return stop;
     });
     // setInterval(this.tick, 1000);
   },
@@ -34,7 +36,7 @@ const App = React.createClass({
             // <CountriesLand fill="#333" />
     return (
       <div>
-        <Projection width={960} height={720} rotation={this.props.projection.rotation} canvas={Canvas} renderer={GeoPathRenderer} onPaintContext={context => dispatch(setPaintContext(context))} context={this.props.context}>
+        <Projection width={960} height={720} canvas={Canvas} renderer={GeoPathRenderer} onPaintContext={context => dispatch(setPaintContext(context))} context={this.props.context} projection={this.props.projection}>
           <World110m data={this.props.data}>
             <CountriesLand fill="#333" />
             <CountriesMesh fill="#333" />
@@ -42,13 +44,14 @@ const App = React.createClass({
           <Sphere />
         </Projection>
         <button onClick={() =>
-          dispatch(incRotation(1))
+          stop = true
         }>Rotate!</button>
       </div>
     );
   },
 
   tick() {
+    this.props.dispatch(incRotation(1))
     // this.setState({ rotation: 1e-2 * Date.now() - this.state.start });
     // requestAnimationFrame(this.tick);
   },

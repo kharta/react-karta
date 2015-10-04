@@ -6,7 +6,6 @@ export default React.createClass({
   propTypes: {
     width: React.PropTypes.number.isRequired,
     height: React.PropTypes.number.isRequired,
-    rotation: React.PropTypes.array.isRequired,
     canvas: React.PropTypes.func.isRequired,
     renderer: React.PropTypes.func.isRequired,
     children: React.PropTypes.node,
@@ -24,24 +23,6 @@ export default React.createClass({
     };
   },
 
-  componentWillReceiveProps(newProps) {
-    if (newProps.rotation !== this.props.rotation) {
-      this.state.projection.rotate(newProps.rotation);
-    }
-  },
-
-  getInitialState() {
-    const projection = d3.geo.orthographic()
-      .scale(720 / 2.1)
-      .translate([960 / 2, 720 / 2])
-      .clipAngle(90)
-      .precision(null);
-
-    return {
-      projection,
-    };
-  },
-
   componentWillUpdate() {
     this.refs.renderer && this.refs.renderer.clear();
   },
@@ -52,6 +33,15 @@ export default React.createClass({
 
   renderStroke(data, color) {
     this.refs.renderer && this.refs.renderer.stroke(data, color);
+  },
+
+  makeProjection(projectionData) {
+    return projectionData.type()
+    .scale(projectionData.scale)
+    .translate(projectionData.translate)
+    .clipAngle(projectionData.clipAngle)
+    .precision(projectionData.precision)
+    .rotate(projectionData.rotate);
   },
 
   render() {
@@ -65,7 +55,7 @@ export default React.createClass({
         })}
         {this.props.context && React.createElement(this.props.renderer, {
           ref: "renderer",
-          projection: this.state.projection,
+          projection: this.makeProjection(this.props.projection),
           paintContext: this.props.context,
         })}
         {this.props.children}

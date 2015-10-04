@@ -7,8 +7,11 @@ export default React.createClass({
     data: React.PropTypes.object.isRequired,
   },
 
+  getInitialState() {
+    return { geoJSON: topojson.feature(this.context.data, this.context.data.objects.land) };
+  },
+
   render() {
-    const geoJSON = topojson.feature(this.context.data, this.context.data.objects.land);
-    return <Feature geoJSON={geoJSON} />;
+    return <Feature geoJSON={this.state.geoJSON} />;
   },
 });

@@ -15,20 +15,20 @@ const loggerMiddleware = createLogger();
 
 const finalCreateStore = compose(
   applyMiddleware(thunkMiddleware, loggerMiddleware),
-  devTools(),
+  // devTools(),
   persistState(window.location.href.match(/[?&]debug_session=([^&]+)\b/))
 )(createStore);
 
 const store = finalCreateStore(karta);
+    // <DebugPanel top right bottom>
+    //   <DevTools store={store} monitor={LogMonitor} />
+    // </DebugPanel>
 
 ReactDOM.render(
   <div>
     <Provider store={store}>
       <App />
     </Provider>
-    <DebugPanel top right bottom>
-      <DevTools store={store} monitor={LogMonitor} />
-    </DebugPanel>
   </div>,
   document.getElementById("root")
 );
