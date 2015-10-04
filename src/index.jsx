@@ -1,4 +1,5 @@
 import "assets/index.html";
+import "babel-core/polyfill";
 import React from "react";
 import ReactDOM from "react-dom";
 import { compose, createStore, applyMiddleware } from "redux";
@@ -7,12 +8,13 @@ import { DevTools, DebugPanel, LogMonitor } from "redux-devtools/lib/react2";
 import { Provider } from "react-redux";
 import App from "./app";
 import karta from "./reducers";
+import thunkMiddleware from "redux-thunk";
 import createLogger from "redux-logger";
 
 const loggerMiddleware = createLogger();
 
 const finalCreateStore = compose(
-  applyMiddleware(loggerMiddleware),
+  applyMiddleware(thunkMiddleware, loggerMiddleware),
   devTools(),
   persistState(window.location.href.match(/[?&]debug_session=([^&]+)\b/))
 )(createStore);

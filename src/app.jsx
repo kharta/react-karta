@@ -2,15 +2,16 @@ import React from "react";
 import d3 from "d3";
 
 import { connect } from "react-redux";
-import { incRotation } from "./actions";
+import { incRotation, setPaintContext } from "./actions";
 
 import Canvas from "canvas";
 import GeoPathRenderer from "geoPathRenderer";
 import Projection from "projection";
 // import FeatureCollection from "featureCollection";
 import Sphere from "sphere";
-import WorldCountriesMesh from "worldCountriesMesh";
-import WorldCountriesLand from "worldCountriesLand";
+import World110m from "world110m";
+import CountriesLand from "countriesLand";
+import CountriesMesh from "countriesMesh";
 
 const App = React.createClass({
   getInitialState() {
@@ -30,15 +31,20 @@ const App = React.createClass({
 
   render() {
     const { dispatch } = this.props;
+            // <CountriesLand fill="#333" />
     return (
-      <Projection width={960} height={720} rotation={this.props.projection.rotation} canvas={Canvas} renderer={GeoPathRenderer}>
-        <WorldCountriesLand fill={"#333"} />
-        <WorldCountriesMesh fill={"#333"} />
-        <Sphere />
+      <div>
+        <Projection width={960} height={720} rotation={this.props.projection.rotation} canvas={Canvas} renderer={GeoPathRenderer} onPaintContext={context => dispatch(setPaintContext(context))} context={this.props.context}>
+          <World110m data={this.props.data}>
+            <CountriesLand fill="#333" />
+            <CountriesMesh fill="#333" />
+          </World110m>
+          <Sphere />
+        </Projection>
         <button onClick={() =>
           dispatch(incRotation(1))
         }>Rotate!</button>
-      </Projection>
+      </div>
     );
   },
 
@@ -52,6 +58,7 @@ function select(state) {
   return state;
 }
 
+// export default connect(select, null, null, { pure: false })(App);
 export default connect(select)(App);
 
 

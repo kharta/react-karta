@@ -8,7 +8,8 @@ export default React.createClass({
   },
 
   componentDidMount() {
-    this.props.connectPaintContext(ReactDOM.findDOMNode(this).getContext("2d"));
+    const context = ReactDOM.findDOMNode(this).getContext("2d");
+    this.props.onPaintContext(context);
   },
 
   shouldComponentUpdate() { return false; },

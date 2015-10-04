@@ -6,7 +6,15 @@ export default React.createClass({
     paintContext: React.PropTypes.object,
   },
 
+  shouldComponentUpdate() {
+    return true;
+  },
+
   componentDidUpdate() {
+    this.context.renderStroke(this.props.geoJSON, "#fff");
+  },
+
+  componentDidMount() {
     this.context.renderStroke(this.props.geoJSON, "#fff");
   },
 

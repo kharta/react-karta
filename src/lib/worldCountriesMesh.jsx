@@ -2,6 +2,7 @@ import React from "react";
 import axios from "axios";
 import topojson from "topojson";
 import worldURL from "file!data/world-110m.json";
+import { incRotation } from "../actions";
 
 import Mesh from "mesh";
 
@@ -10,6 +11,10 @@ export default React.createClass({
     return {
       geoJSON: null,
     };
+  },
+
+  contextTypes: {
+    store: React.PropTypes.object,
   },
 
   componentDidMount() {

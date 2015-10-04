@@ -7,11 +7,14 @@ export default React.createClass({
   },
 
   shouldComponentUpdate() {
-    console.log("feature update?");
     return true;
   },
 
   componentDidUpdate() {
+    this.context.renderPath(this.props.geoJSON);
+  },
+
+  componentDidMount() {
     this.context.renderPath(this.props.geoJSON);
   },
 

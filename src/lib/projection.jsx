@@ -6,7 +6,7 @@ export default React.createClass({
   propTypes: {
     width: React.PropTypes.number.isRequired,
     height: React.PropTypes.number.isRequired,
-    rotation: React.PropTypes.number.isRequired,
+    rotation: React.PropTypes.array.isRequired,
     canvas: React.PropTypes.func.isRequired,
     renderer: React.PropTypes.func.isRequired,
     children: React.PropTypes.node,
@@ -39,7 +39,6 @@ export default React.createClass({
 
     return {
       projection,
-      paintContext: null,
     };
   },
 
@@ -61,20 +60,16 @@ export default React.createClass({
         {React.createElement(this.props.canvas, {
           width: this.props.width,
           height: this.props.height,
-          connectPaintContext: this.connectPaintContext,
+          onPaintContext: this.props.onPaintContext,
           ref: "canvas",
         })}
-        {this.state.paintContext && React.createElement(this.props.renderer, {
+        {this.props.context && React.createElement(this.props.renderer, {
           ref: "renderer",
           projection: this.state.projection,
-          paintContext: this.state.paintContext,
+          paintContext: this.props.context,
         })}
         {this.props.children}
       </div>
     );
-  },
-
-  connectPaintContext(paintContext) {
-    this.setState({ paintContext: paintContext }, this.forceUpdate);
   },
 });
