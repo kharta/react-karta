@@ -1,48 +1,32 @@
 import "assets/index.html";
 import React from "react";
 import ReactDOM from "react-dom";
-import d3 from "d3";
+import { compose, createStore, applyMiddleware } from "redux";
+import { devTools, persistState } from "redux-devtools";
+import { DevTools, DebugPanel, LogMonitor } from "redux-devtools/lib/react2";
+import { Provider } from "react-redux";
+import App from "./app";
+import karta from "./reducers";
+import createLogger from "redux-logger";
 
-import Canvas from "canvas";
-import GeoPathRenderer from "geoPathRenderer";
-import Projection from "projection";
-// import FeatureCollection from "featureCollection";
-import Sphere from "sphere";
-import WorldCountriesMesh from "worldCountriesMesh";
-import WorldCountriesLand from "worldCountriesLand";
+const loggerMiddleware = createLogger();
 
-const App = React.createClass({
-  getInitialState() {
-    return {
-      start: Date.now(),
-      rotation: 0,
-    };
-  },
+const finalCreateStore = compose(
+  applyMiddleware(loggerMiddleware),
+  devTools(),
+  persistState(window.location.href.match(/[?&]debug_session=([^&]+)\b/))
+)(createStore);
 
-  componentDidMount() {
-    this.tick();
-    d3.timer(() => {
-      this.tick();
-    });
-    // setInterval(this.tick, 1000);
-  },
+const store = finalCreateStore(karta);
 
-  render() {
-    return (
-      <Projection width={960} height={720} rotation={this.state.rotation} canvas={Canvas} renderer={GeoPathRenderer}>
-        <WorldCountriesLand fill={"#333"} />
-        <WorldCountriesMesh fill={"#333"} />
-        <Sphere />
-      </Projection>
-    );
-  },
-
-  tick() {
-    // this.setState({ rotation: 1e-2 * Date.now() - this.state.start });
-    // requestAnimationFrame(this.tick);
-  },
-
-});
-
-ReactDOM.render(<App />, document.getElementById("root"));
-
+ReactDOM.render(
+  <div>
+    <Provider store={store}>
+      <App />
+    </Provider>
+    <DebugPanel top right bottom>
+      <DevTools store={store} monitor={LogMonitor} />
+    </DebugPanel>
+  </div>,
+  document.getElementById("root")
+);

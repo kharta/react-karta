@@ -26,7 +26,7 @@ export default React.createClass({
 
   componentWillReceiveProps(newProps) {
     if (newProps.rotation !== this.props.rotation) {
-      this.state.projection.rotate([newProps.rotation, newProps.rotation]);
+      this.state.projection.rotate(newProps.rotation);
     }
   },
 
