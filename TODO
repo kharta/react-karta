@@ -1,0 +1,7 @@
+Preprojection & Presimplification
+- Preproject input geometry
+- Presimplify projected input geometry
+- Dynamically simplify geometry so that the detail is about one square pixel
+
+This should speed up our canvas rendering enough that interactions should be jank-free
+even in debug mode.
