@@ -1,6 +1,7 @@
 import {
   SET_ROTATION, INC_ROTATION, SET_PAINT_CONTEXT,
   REQUEST_DATA, RECEIVE_DATA, SET_SCALE_AND_TRANSLATE,
+  START_INTERACTION, END_INTERACTION, REDRAW,
 } from "./actions";
 
 import d3 from "d3";
@@ -8,7 +9,7 @@ import d3 from "d3";
 const initialProjection = {
   type: d3.geo.mercator,
   scale: 720 / 2,
-  translate: [0, 0],
+  translate: [480, 360],
   clipExtent: [[0, 0], [960, 720]],
   // clipAngle: 90,
   precision: 0,
@@ -59,16 +60,19 @@ function data(state = {}, action) {
   }
 }
 
-function path(p) {
+function path(state) {
+  const p = state.projection;
   if (p) {
-    console.log(p.translate);
-    const area = 1 / p.scale / p.scale * 100000;
+    // console.log(p.translate);
+    const precisionMultiplier = state.interacting ? 1000000 : 100;
+    // const precision = state.interacting ? null : 10000;
+    const area = 1 / p.scale / p.scale * precisionMultiplier;
     const proj = p.type()
         .scale(p.scale)
         .translate(p.translate)
         .clipExtent(p.clipExtent)
         // .clipAngle(p.clipAngle)
-        .precision(area)
+        .precision(null)
         .rotate(p.rotate);
 
     console.log(area);
@@ -84,11 +88,27 @@ function path(p) {
   }
 }
 
+function interacting(state = false, action) {
+  switch (action.type) {
+    case START_INTERACTION: return true;
+    case END_INTERACTION: return false;
+    default: return state;
+  }
+}
+
+function redraw(state, action) {
+  switch (action.type) {
+    case REDRAW: return state;
+    default: return state;
+  }
+}
+
 export default function karta(state = {}, action) {
   return {
-    projection: projection(state.projection, action),
+    projection: redraw(projection(state.projection, action), action),
     context: context(state.context, action),
     data: data(state.data, action),
-    path: path(state.projection),
+    path: path(state),
+    interacting: interacting(state.interacting, action),
   };
 }

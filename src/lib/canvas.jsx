@@ -20,6 +20,8 @@ export default React.createClass({
       .size([this.props.width, this.props.height])
       .scaleExtent([20, 1000])
       .on("zoom", this.zoomed)
+      .on("zoomstart", this.props.onStartInteraction)
+      .on("zoomend", this.props.onEndInteraction)
       .translate([this.props.width / 2, this.props.height / 2])
       .scale(this.scale);
 

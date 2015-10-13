@@ -1,7 +1,6 @@
 Presimplification
 - Presimplify projected input geometry
 - Dynamically simplify geometry so that the detail is about one square pixel
-- Create START_INTERACTION and END_INTERACTION events, to lower the precision and
 
 This should speed up our canvas rendering enough that interactions should be jank-free
 even in debug mode.

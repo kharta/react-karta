@@ -2,18 +2,22 @@ import React from "react";
 import d3 from "d3";
 
 import { connect } from "react-redux";
-import { incRotation, setPaintContext, setScaleAndTranslate } from "./actions";
+import {
+  incRotation, setPaintContext, setScaleAndTranslate,
+  startInteraction, endInteraction,
+} from "./actions";
 
 import Canvas from "canvas";
 import GeoPathRenderer from "geoPathRenderer";
 import Projection from "projection";
 // import FeatureCollection from "featureCollection";
 import Sphere from "sphere";
-import World110m from "world110m";
+// import World110m from "world110m";
+import World50m from "world50m";
 import CountriesLand from "countriesLand";
 import CountriesMesh from "countriesMesh";
 
-let stop = true;
+// let stop = true;
 const App = React.createClass({
   // getInitialState() {
   //   return {
@@ -23,11 +27,11 @@ const App = React.createClass({
   // },
 
   componentDidMount() {
-    this.tick();
-    d3.timer(() => {
-      this.tick();
-      return stop;
-    });
+    // this.tick();
+    // d3.timer(() => {
+    //   this.tick();
+    //   return stop;
+    // });
     // setInterval(this.tick, 1000);
   },
 
@@ -36,22 +40,19 @@ const App = React.createClass({
             // <CountriesLand fill="#333" />
     return (
       <div>
-        <Projection width={960} height={720} canvas={Canvas} renderer={GeoPathRenderer} onPaintContext={context => dispatch(setPaintContext(context))} context={this.props.context} projection={this.props.projection} path={this.props.path} drag={true} zoom={true} onSetScaleAndTranslate={(scale, translate) => dispatch(setScaleAndTranslate(scale, translate))} onSetTranslate={translate => dispatch(setTranslate(translate))}>
-          <World110m data={this.props.data}>
+        <Projection width={960} height={720} canvas={Canvas} renderer={GeoPathRenderer} onPaintContext={context => dispatch(setPaintContext(context))} context={this.props.context} projection={this.props.projection} path={this.props.path} drag={true} zoom={true} onSetScaleAndTranslate={(scale, translate) => dispatch(setScaleAndTranslate(scale, translate))} onSetTranslate={translate => dispatch(setTranslate(translate))} onStartInteraction={() => dispatch(startInteraction())} onEndInteraction={() => dispatch(endInteraction())}>
+          <World50m data={this.props.data}>
             <CountriesLand fill="#333" />
             <CountriesMesh fill="#333" />
-          </World110m>
+          </World50m>
           <Sphere />
         </Projection>
-        <button onClick={() =>
-          stop = true
-        }>Rotate!</button>
       </div>
     );
   },
 
   tick() {
-    this.props.dispatch(incRotation(1));
+    // this.props.dispatch(incRotation(1));
     // this.setState({ rotation: 1e-2 * Date.now() - this.state.start });
     // requestAnimationFrame(this.tick);
   },

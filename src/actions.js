@@ -6,6 +6,9 @@ export const SET_PAINT_CONTEXT = "SET_PAINT_CONTEXT";
 export const REQUEST_DATA = "REQUEST_DATA";
 export const RECEIVE_DATA = "RECEIVE_DATA";
 export const SET_SCALE_AND_TRANSLATE = "SET_SCALE_AND_TRANSLATE";
+export const START_INTERACTION = "START_INTERACTION";
+export const END_INTERACTION = "END_INTERACTION";
+export const REDRAW = "REDRAW";
 
 export function setRotation(angle) {
   return { type: SET_ROTATION, angle };
@@ -40,3 +43,23 @@ export function fetchData(key, filename) {
 export function setScaleAndTranslate(scale, translate) {
   return { type: SET_SCALE_AND_TRANSLATE, scale, translate };
 }
+
+export function startInteraction() {
+  return { type: START_INTERACTION };
+}
+
+function signalEndInteraction() {
+  return { type: END_INTERACTION };
+}
+
+function redraw() {
+  return { type: REDRAW };
+}
+
+export function endInteraction() {
+  return dispatch => {
+    dispatch(signalEndInteraction());
+    dispatch(redraw());
+  };
+}
+

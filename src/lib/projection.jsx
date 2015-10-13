@@ -59,6 +59,8 @@ export default React.createClass({
           drag: this.props.drag,
           zoom: this.props.zoom,
           onSetScaleAndTranslate: this.props.onSetScaleAndTranslate,
+          onStartInteraction: this.props.onStartInteraction,
+          onEndInteraction: this.props.onEndInteraction,
           ref: "canvas",
         })}
         {this.props.context && React.createElement(this.props.renderer, {
