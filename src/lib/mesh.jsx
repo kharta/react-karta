@@ -11,11 +11,11 @@ export default React.createClass({
   },
 
   componentDidUpdate() {
-    this.context.renderStroke(this.props.geoJSON, "#fff");
+    this.context.renderStroke(this.props.geoJSON, this.props.fill || "#fff");
   },
 
   componentDidMount() {
-    this.context.renderStroke(this.props.geoJSON, "#fff");
+    this.context.renderStroke(this.props.geoJSON, this.props.fill || "#fff");
   },
 
   render() {

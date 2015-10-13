@@ -12,8 +12,8 @@ import GeoPathRenderer from "geoPathRenderer";
 import Projection from "projection";
 // import FeatureCollection from "featureCollection";
 import Sphere from "sphere";
-// import World110m from "world110m";
-import World50m from "world50m";
+import World from "world110m";
+// import World from "world50m";
 import CountriesLand from "countriesLand";
 import CountriesMesh from "countriesMesh";
 
@@ -41,10 +41,9 @@ const App = React.createClass({
     return (
       <div>
         <Projection width={960} height={720} canvas={Canvas} renderer={GeoPathRenderer} onPaintContext={context => dispatch(setPaintContext(context))} context={this.props.context} projection={this.props.projection} path={this.props.path} drag={true} zoom={true} onSetScaleAndTranslate={(scale, translate) => dispatch(setScaleAndTranslate(scale, translate))} onSetTranslate={translate => dispatch(setTranslate(translate))} onStartInteraction={() => dispatch(startInteraction())} onEndInteraction={() => dispatch(endInteraction())}>
-          <World50m data={this.props.data}>
-            <CountriesLand fill="#333" />
+          <World data={this.props.data}>
             <CountriesMesh fill="#333" />
-          </World50m>
+          </World>
           <Sphere />
         </Projection>
       </div>

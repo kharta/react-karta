@@ -18,7 +18,7 @@ export default React.createClass({
     const canvas = d3.select(node);
     this.zoom = d3.behavior.zoom()
       .size([this.props.width, this.props.height])
-      .scaleExtent([20, 1000])
+      .scaleExtent([5, 100000])
       .on("zoom", this.zoomed)
       .on("zoomstart", this.props.onStartInteraction)
       .on("zoomend", this.props.onEndInteraction)
@@ -28,7 +28,7 @@ export default React.createClass({
     canvas.call(this.zoom);
   },
 
-  zoomed(d) {
+  zoomed() {
     this.scale = this.zoom.scale();
     this.props.onSetScaleAndTranslate(this.scale, this.zoom.translate());
   },

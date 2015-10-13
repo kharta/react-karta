@@ -29,7 +29,8 @@ function projection(state = initialProjection, action) {
     case SET_SCALE_AND_TRANSLATE:
       return Object.assign({}, state, {
         scale: action.scale,
-        translate: action.translate,
+        rotate: [action.translate[0], 0],
+        // rotate: action.translate,
       });
     default:
       return state;

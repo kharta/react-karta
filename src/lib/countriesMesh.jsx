@@ -13,6 +13,6 @@ export default React.createClass({
   },
 
   render() {
-    return <Mesh geoJSON={this.state.geoJSON} />;
+    return <Mesh geoJSON={this.state.geoJSON} {...this.props} />;
   },
 });

@@ -57,9 +57,11 @@ function redraw() {
 }
 
 export function endInteraction() {
-  return dispatch => {
-    dispatch(signalEndInteraction());
-    dispatch(redraw());
+  return (dispatch, getState) => {
+    if (getState().interacting) {
+      dispatch(signalEndInteraction());
+      dispatch(redraw());
+    }
   };
 }
 
