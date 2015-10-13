@@ -8,6 +8,7 @@ export default React.createClass({
   },
 
   getInitialState() {
+    topojson.presimplify(this.context.data);
     return { geoJSON: topojson.feature(this.context.data, this.context.data.objects.land) };
   },
 

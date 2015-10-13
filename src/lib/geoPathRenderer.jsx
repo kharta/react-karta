@@ -16,10 +16,8 @@ export default React.createClass({
 
   stroke(data, color) {
     const ctx = this.props.paintContext;
-    const projection = this.props.projection;
-    const path = d3.geo.path()
-      .projection(projection)
-      .context(ctx);
+    const path = this.props.path;
+    path.context(ctx);
 
     ctx.beginPath();
     path(data);
@@ -30,10 +28,8 @@ export default React.createClass({
 
   fill(data, color) {
     const ctx = this.props.paintContext;
-    const projection = this.props.projection;
-    const path = d3.geo.path()
-      .projection(projection)
-      .context(ctx);
+    const path = this.props.path;
+    path.context(ctx);
 
     ctx.beginPath();
     path(data);

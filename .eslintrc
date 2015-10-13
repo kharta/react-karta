@@ -9,5 +9,7 @@
     "no-else-return": 0,
     "no-unused-vars": [2, {"vars": "all", "args": "after-used"}],
     "no-undef": 1,
+    "react/sort-comp": 0,
+    "react/prop-types": 0,
   },
 }

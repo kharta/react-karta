@@ -2,7 +2,7 @@ import React from "react";
 import d3 from "d3";
 
 import { connect } from "react-redux";
-import { incRotation, setPaintContext } from "./actions";
+import { incRotation, setPaintContext, setScaleAndTranslate } from "./actions";
 
 import Canvas from "canvas";
 import GeoPathRenderer from "geoPathRenderer";
@@ -13,7 +13,7 @@ import World110m from "world110m";
 import CountriesLand from "countriesLand";
 import CountriesMesh from "countriesMesh";
 
-let stop = false;
+let stop = true;
 const App = React.createClass({
   // getInitialState() {
   //   return {
@@ -36,7 +36,7 @@ const App = React.createClass({
             // <CountriesLand fill="#333" />
     return (
       <div>
-        <Projection width={960} height={720} canvas={Canvas} renderer={GeoPathRenderer} onPaintContext={context => dispatch(setPaintContext(context))} context={this.props.context} projection={this.props.projection}>
+        <Projection width={960} height={720} canvas={Canvas} renderer={GeoPathRenderer} onPaintContext={context => dispatch(setPaintContext(context))} context={this.props.context} projection={this.props.projection} path={this.props.path} drag={true} zoom={true} onSetScaleAndTranslate={(scale, translate) => dispatch(setScaleAndTranslate(scale, translate))} onSetTranslate={translate => dispatch(setTranslate(translate))}>
           <World110m data={this.props.data}>
             <CountriesLand fill="#333" />
             <CountriesMesh fill="#333" />
@@ -51,7 +51,7 @@ const App = React.createClass({
   },
 
   tick() {
-    this.props.dispatch(incRotation(1))
+    this.props.dispatch(incRotation(1));
     // this.setState({ rotation: 1e-2 * Date.now() - this.state.start });
     // requestAnimationFrame(this.tick);
   },

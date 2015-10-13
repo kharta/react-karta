@@ -5,6 +5,7 @@ export const INC_ROTATION = "INC_ROTATION";
 export const SET_PAINT_CONTEXT = "SET_PAINT_CONTEXT";
 export const REQUEST_DATA = "REQUEST_DATA";
 export const RECEIVE_DATA = "RECEIVE_DATA";
+export const SET_SCALE_AND_TRANSLATE = "SET_SCALE_AND_TRANSLATE";
 
 export function setRotation(angle) {
   return { type: SET_ROTATION, angle };
@@ -34,4 +35,8 @@ export function fetchData(key, filename) {
       .then(response => response.json())
       .then(json => dispatch(receiveData(key, json)));
   };
+}
+
+export function setScaleAndTranslate(scale, translate) {
+  return { type: SET_SCALE_AND_TRANSLATE, scale, translate };
 }

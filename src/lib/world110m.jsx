@@ -1,11 +1,13 @@
 import React from "react";
 import worldURL from "file!data/world-110m.json";
 import Feature from "feature";
+import topojson from "topojson";
 import { fetchData } from "../actions";
 
 export default React.createClass({
   contextTypes: {
     store: React.PropTypes.object.isRequired,
+    projection: React.PropTypes.func.isRequired,
   },
 
   childContextTypes: {
